@@ -29,7 +29,7 @@ body {
 }
 
 main {
-    max-width: 640px;
+    max-width: 1000px;
     margin: 48px auto;
     padding: 0 20px;
 }
@@ -78,23 +78,65 @@ input::placeholder {
 
 button {
     padding: 9px 18px;
-    border: none;
     border-radius: var(--radius);
     font-size: 0.9rem;
     font-family: inherit;
     cursor: pointer;
-    transition: background-color 0.15s;
+    transition:
+        background-color 0.15s,
+        color 0.15s,
+        border-color 0.15s;
 }
 
-button[type='submit'],
-button:first-of-type {
+.btn-primary {
     background: var(--primary);
     color: #fff;
+    border: 1px solid var(--primary);
 }
 
-button[type='submit']:hover,
-button:first-of-type:hover {
+.btn-primary:hover:not(:disabled) {
     background: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-secondary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Form error */
+
+.form-error {
+    width: 100%;
+    color: #c0392b;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Field labels */
+
+.field-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
 }
 
 /* List */
@@ -124,24 +166,6 @@ li > *:not(button):not(input) {
 }
 
 li button {
-    background: transparent;
-    color: var(--text-muted);
-    border: 1px solid var(--border);
     padding: 6px 12px;
     font-size: 0.85rem;
-}
-
-li button:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-}
-
-li button[type='submit'] {
-    background: var(--primary);
-    color: #fff;
-    border-color: var(--primary);
-}
-
-li button[type='submit']:hover {
-    background: var(--primary-hover);
 }

@@ -17,6 +17,11 @@ export class OrganizationDbRepository implements OrganizationRepository {
     return entity ? entity.toDomain() : null;
   }
 
+  async findByName(name: string): Promise<Organization | null> {
+    const entity = await this.repo.findOneBy({ name });
+    return entity ? entity.toDomain() : null;
+  }
+
   async findAll(): Promise<Organization[]> {
     const entities = await this.repo.find();
     return entities.map((e) => e.toDomain());

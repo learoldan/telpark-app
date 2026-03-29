@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrganizationsModule } from './organizations/organizations.module';
+import { ChargePointsModule } from './charge-points/charge-points.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { OrganizationsModule } from './organizations/organizations.module';
       synchronize: true,
     }),
     OrganizationsModule,
+    ChargePointsModule,
   ],
   controllers: [],
   providers: [],

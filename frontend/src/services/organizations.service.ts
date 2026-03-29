@@ -20,6 +20,10 @@ export async function createOrganization(data: {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
     })
+    if (!response.ok) {
+        const body = await response.json().catch(() => ({}))
+        throw new Error(body?.message ?? 'Error al crear la organización')
+    }
     return response.json()
 }
 

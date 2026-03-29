@@ -9,6 +9,8 @@ import {
     deleteOrganization,
 } from '../services/organizations.service'
 import EditModal, { FieldDef } from './EditModal'
+import ChargePointList from './ChargePointList'
+import ChargePointForm from './ChargePointForm'
 
 const ORG_FIELDS: FieldDef[] = [
     { key: 'name', label: 'Nombre', required: true },
@@ -23,6 +25,8 @@ export default function OrganizationList({
     const [organizations, setOrganizations] = useState<Organization[]>([])
     const [loading, setLoading] = useState(true)
     const [editingOrg, setEditingOrg] = useState<Organization | null>(null)
+    const [chargePointsCpo, setChargePointsCpo] = useState<string | null>(null)
+    const [cpRefreshKey, setCpRefreshKey] = useState(0)
 
     useEffect(() => {
         getOrganizations()
@@ -59,26 +63,86 @@ export default function OrganizationList({
             <ul>
                 {organizations.map((org) => (
                     <li key={org.id} style={{ marginBottom: '0.5rem' }}>
-                        <strong>{org.name}</strong>
-                        {org.legalEntity && ` — ${org.legalEntity}`}
-                        <span
+                        <div
                             style={{
-                                marginLeft: '1rem',
-                                display: 'inline-flex',
-                                gap: '0.5rem',
+                                flex: 1,
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                gap: '0.5rem 1.5rem',
                             }}
                         >
-                            <button onClick={() => handleEditClick(org.id)}>
-                                Edit
+                            <span>
+                                <span className='field-label'>Nombre:</span>{' '}
+                                <strong>{org.name}</strong>
+                            </span>
+                            {org.legalEntity && (
+                                <span>
+                                    <span className='field-label'>
+                                        Entidad legal:
+                                    </span>{' '}
+                                    {org.legalEntity}
+                                </span>
+                            )}
+                        </div>
+                        <span
+                            style={{
+                                marginLeft: 'auto',
+                                display: 'inline-flex',
+                                gap: '0.5rem',
+                                flexShrink: 0,
+                            }}
+                        >
+                            <button
+                                className='btn-primary'
+                                onClick={() => handleEditClick(org.id)}
+                            >
+                                Editar
                             </button>
-                            <button onClick={() => handleDelete(org.id)}>
-                                Delete
+                            <button
+                                className='btn-secondary'
+                                onClick={() => handleDelete(org.id)}
+                            >
+                                Eliminar
                             </button>
-                            <button onClick={() => {}}>ChargePoints</button>
+                            <button
+                                className='btn-secondary'
+                                onClick={() =>
+                                    setChargePointsCpo(
+                                        chargePointsCpo === org.name
+                                            ? null
+                                            : org.name,
+                                    )
+                                }
+                            >
+                                {chargePointsCpo === org.name
+                                    ? 'Ocultar Puntos de Carga'
+                                    : 'Puntos de Carga'}
+                            </button>
                         </span>
                     </li>
                 ))}
             </ul>
+
+            {chargePointsCpo && (
+                <div
+                    style={{
+                        margin: '1rem 0',
+                        padding: '1rem',
+                        border: '1px solid #ccc',
+                        borderRadius: '6px',
+                    }}
+                >
+                    <h3>Puntos de carga de {chargePointsCpo}</h3>
+                    <ChargePointForm
+                        fixedCpo={chargePointsCpo}
+                        onCreated={() => setCpRefreshKey((k) => k + 1)}
+                    />
+                    <ChargePointList
+                        refreshKey={cpRefreshKey}
+                        cpo={chargePointsCpo}
+                    />
+                </div>
+            )}
 
             {editingOrg && (
                 <EditModal

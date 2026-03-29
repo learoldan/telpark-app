@@ -75,11 +75,19 @@ export default function EditModal({
                         justifyContent: 'flex-end',
                     }}
                 >
-                    <button onClick={handleSave} disabled={saving}>
-                        {saving ? 'Saving...' : 'Save'}
+                    <button
+                        className='btn-primary'
+                        onClick={handleSave}
+                        disabled={saving}
+                    >
+                        {saving ? 'Guardando...' : 'Guardar'}
                     </button>
-                    <button onClick={onCancel} disabled={saving}>
-                        Cancel
+                    <button
+                        className='btn-secondary'
+                        onClick={onCancel}
+                        disabled={saving}
+                    >
+                        Cancelar
                     </button>
                 </div>
             </div>

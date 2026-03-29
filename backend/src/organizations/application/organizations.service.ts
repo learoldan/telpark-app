@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Organization } from '../domain/organization';
 import type { OrganizationRepository } from '../domain/organization.repository';
 
@@ -22,6 +27,14 @@ export class OrganizationsService {
   }
 
   async create(organization: Organization): Promise<Organization> {
+    const existing = await this.organizationRepository.findByName(
+      organization.name,
+    );
+    if (existing) {
+      throw new ConflictException(
+        `Ya existe una organización con el nombre "${organization.name}"`,
+      );
+    }
     return this.organizationRepository.create(organization);
   }
 
