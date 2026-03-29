@@ -12,3 +12,6 @@ frontend/.env
 frontend/.env.local
 frontend/build/
 frontend/.next/
+
+backend.zip
+frontend.zip
